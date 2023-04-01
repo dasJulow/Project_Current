@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "build": "webpack --watch --config webpack.development.js",
+    "release": "webpack --config webpack.production.js"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^10.2.4",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "firebase": "^9.18.0",
+    "firebaseui": "^6.0.2"
+  }
+}
