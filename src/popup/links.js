@@ -1,6 +1,7 @@
+const currentChannelName = localStorage.getItem('channelName');
+console.log(currentChannelName);
+
 document.addEventListener("DOMContentLoaded", function(event) {
-  const currentChannelName = localStorage.getItem('channelName');
-  console.log(currentChannelName);
   const heading = document.getElementById('aff_links');
   heading.innerText += ` for ${currentChannelName}`;
   console.log("javascript connected!")
