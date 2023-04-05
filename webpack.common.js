@@ -14,7 +14,8 @@ module.exports = {
     popup: './src/popup/popup.js',
     main_script: './src/popup/main-script.js',
     options: './src/options/options.js',
-    links: './src/popup/links.js'
+    links: './src/popup/links.js',
+    saved: './src/popup/saved.js'
   },
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
@@ -41,6 +42,11 @@ module.exports = {
       template: path.join(__dirname, "src", "popup", "select_links.html"),
       filename: "select_links.html",
       chunks: ["links"] // This is script from entry point
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "popup", "saved_links.html"),
+      filename: "saved_links.html",
+      chunks: ["saved"] // This is script from entry point
     }),
     // Note: This is to copy any remaining files to bundler
     new CopyWebpackPlugin({
