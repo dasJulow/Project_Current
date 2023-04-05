@@ -21,9 +21,10 @@
     "tabs"
   ],
 
-"host_permissions":[
-  "all_urls"
-],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  
 
   "content_scripts": [
     {

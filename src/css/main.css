@@ -1,13 +1,16 @@
 @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
 body {
-  display: block;
-  flex-direction: column;
-  justify-content: center;
-  background: linear-gradient(#fff, #3c76b8);
-  font-family: "Lato", sans-serif;
-  width: 300px;
-  height: 230px;
-}
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: white;
+} 
+
+
+
+
 
 h1 {
   color: #3c76b8;
@@ -18,6 +21,17 @@ h1 {
   padding-left: 10px;
   padding-top: 5px;
 }
+
+
+
+
+.input_field{
+  border-radius: 10px;
+  height: 30px;
+  text-align: center;
+}
+
+
 
 .btn {
   display: block;
@@ -31,6 +45,9 @@ h1 {
   font-family: "Lato", sans-serif;
   font-weight: 600;
   margin: 0 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .btn__color{
   display: flex;
@@ -39,18 +56,65 @@ h1 {
   border-radius: 5px;
   cursor: pointer;
   outline: none;
+  justify-content: center;
 }
 
+
+.btn_search {
+  background-color: #4286f490;
+  color: #fff;
+  font-size: 15px;
+  height: 20px;
+  width: 80%;
+  border-radius: 5px;
+  text-align: center;
+  margin:  10px;
+  transition: transform 0.3s;
+}
+
+.btn_search:hover {
+  animation-name: searching;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-duration: 0.4s;
+  background-color: #3c76b8;
+}
+
+
+
+
 .btn__sign_out {
-  background-color: #4285F4;
+  background-color: rgba(255, 0, 0, 0.862);
   color: #fff;
   font-size: 18px;
 }
 
 .btn__sign_out:hover {
   background-color: #fff;
-  color: #4285F4;
-  border: 1px solid #4285F4;
+  color: rgba(255, 0, 0, 0.862);
+  border: 1px solid rgba(255, 0, 0, 0.862);
+}
+
+.btn_saved_links {
+  background-color: #e0a800eb;
+  color: #fff;
+  font-size: 18px;
+}
+.btn_saved_links:hover {
+  background-color: #fff;
+  color: #e0a800eb;
+  border: 1px solid #e0a800eb;
+  
+}
+#my_saved_links:hover {
+  animation-name: choosing;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-duration: 0.4s;
+}
+
+#my_saved_links {
+  width: 100%;
 }
 
 #sign_out{
@@ -64,9 +128,20 @@ h1 {
     }
 }
 
+@keyframes searching {
+  100% {
+      transform: rotate(0deg) scaleX(1.1);
+      box-shadow: 0px 0px 20px 2px white; 
+  }
+}
+
+
 #sign_out:hover {
     animation-name: choosing;
     animation-direction: normal;
     animation-fill-mode: forwards;
     animation-duration: 0.4s;
 }
+
+
+  

@@ -40,7 +40,9 @@ videoDescriptions.forEach(description => {
               links.push(event.target.href);
               storage.set({ [currentChannelName]: links }, function() {
                 console.log('Link saved to storage');
+                
               });
+              li.classList.add('clicked');
             } else {
               console.log('Link already exists in storage');
             }

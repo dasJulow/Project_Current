@@ -3,12 +3,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     chrome.storage.sync.get(null, function(result) {
       console.log("Storage sync is working!!!")
       const links = Object.values(result).flat();
+      
+      const regex = /www(.*?)\.com/;
       const matchingLinks = links.filter(link => {
-        if (tab.url.startsWith(link)) {
+        if (regex.test(tab.url) && tab.url.includes(link)) {
           console.log(`The match is: ${link}`);
           return true;
         } else {
-          console.log('Sorry, no match found')
+          
           return false;
         }
       });
@@ -24,3 +26,5 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
   }
 });
+
+
