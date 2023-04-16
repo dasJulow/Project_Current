@@ -1,98 +1,112 @@
-console.log("popup!")
 
-import { firebaseApp } from './firebase_config'
-import {
-    getAuth,
-    onAuthStateChanged,
-    signInWithCredential,
-    GoogleAuthProvider,
-    setPersistence,
-    browserLocalPersistence
-} from 'firebase/auth';
+console.log("popup main!")
 
-// Auth instance for the current firebaseApp
-const auth = getAuth(firebaseApp);
-setPersistence(auth, browserLocalPersistence)
 
-function init() {
-    // Detect auth state
-    onAuthStateChanged(auth, user => {
-        if (user != null) {
-            console.log('Below User is logged in:')
-            console.log(user)
-            window.location.replace('./main.html');
-        } else {
-            console.log('No user logged in!');
-        }
-    });
-}
-init();
 
-document.querySelector('.btn__google').addEventListener('click', () => {
-    initFirebaseApp()
-});
+const API_KEY = 'AIzaSyAzUeU1l9kfi_cmo02t1BRM8waNw8xMQcE';
 
-function initFirebaseApp() {
-    // Detect auth state
-    onAuthStateChanged(auth, user => {
-        if (user != null) {
-            console.log('logged in!');
-            console.log("current")
-            console.log(user)
-            console.log(user.token)
-        } else {
-            console.log('No user');
-            startSignIn()
-        }
-    });
-}
+export let channelName = '';
 
-/**
- * Starts the sign-in process.
- */
-function startSignIn() {
-    console.log("started SignIn")
-    //https://firebase.google.com/docs/auth/web/manage-users
-    const user = auth.currentUser;
-    if (user) {
-        console.log("current")
-        console.log(user)
-        auth.signOut();
+// function to search for a YouTube channel by name
+async function searchChannels(channelName) {
+  
+  const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${channelName}&key=${API_KEY}`;
+
+  try {
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+
+    if (data.items.length > 0) {
+      const channelId = data.items[0].id.channelId;
+      
+      return channelId;
     } else {
-        console.log("proceed")
-        startAuth(true);
+      
+      return null;
     }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 
-/**
- * Start the auth flow and authorizes to Firebase.
- * @param{boolean} interactive True if the OAuth flow should request with an interactive mode.
- */
-function startAuth(interactive) {
-    console.log("Auth trying")
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-        //Token:  This requests an OAuth token from the Chrome Identity API.
-        if (chrome.runtime.lastError && !interactive) {
-            console.log('It was not possible to get a token programmatically.');
-        } else if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
-        } else if (token) {
-            // Follows: https://firebase.google.com/docs/auth/web/google-signin
-            // Authorize Firebase with the OAuth Access Token.
-            // console.log("TOKEN:")
-            // console.log(token)
-            // Builds Firebase credential with the Google ID token.
-            const credential = GoogleAuthProvider.credential(null, token);
-            signInWithCredential(auth, credential).then((result) => {
-                console.log("Success!!!")
-                console.log(result)
-            }).catch((error) => {
-                // You can handle errors here
-                console.log(error)
-            });
-        } else {
-            console.error('The OAuth token was null');
-        }
-    });
-}
+// function to fetch video descriptions for a given channel and number of videos
+async function getVideoDescriptions(channelId, numberOfVideos) {
+    const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=${numberOfVideos}&order=date&type=video&key=${API_KEY}`;
+  
+    try {
+      const response = await fetch(searchUrl);
+      const data = await response.json();
+      const videoIds = data.items.map(item => item.id.videoId);
+      const videosUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoIds.join(',')}&key=${API_KEY}`;
+      const videosResponse = await fetch(videosUrl);
+      const videosData = await videosResponse.json();
+      const descriptions = videosData.items.map(item => {
+        return {
+          description: item.snippet.description,
+          videoId: item.id,
+          title: item.snippet.title
+        };
+      });
+      
+      return descriptions;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+  // function to handle the form submit event
+  async function handleSubmit(event) {
+    event.preventDefault();
+     channelName = document.querySelector('#channel-name').value;
+    const messageDiv = document.getElementById('message');
+
+
+    //trying to save channelName input value
+    channelName = document.querySelector('#channel-name'.value)
+
+  
+    const channelId = await searchChannels(channelName); 
+  
+    if (channelId) { 
+  
+      const videoDescriptions = await getVideoDescriptions(channelId, 6); 
+  
+      if (videoDescriptions.length > 0) { 
+  
+        // Construct the URL with the videoDescriptions array as a parameter
+        const url = `select_links.html?videoDescriptions=${encodeURIComponent(JSON.stringify(videoDescriptions))}`;
+  
+        // Redirect to select_links.html 
+        const selectLinksWindow = window.open(url, '_blank');
+        
+      } else { 
+  
+        messageDiv.innerHTML = 'No video descriptions found.'; 
+  
+      } 
+  
+    } else { 
+  
+      messageDiv.innerHTML = 'No channel found.'; 
+  
+    } 
+  }
+  
+  
+
+
+
+// add event listener for form submit
+  document.getElementById('search-button')?.addEventListener('click', handleSubmit);
+
+  document.getElementById("my_saved_links")?.addEventListener("click", openNewPage);
+
+  function openNewPage() {
+    window.open("saved_links.html", "_blank");
+  }
+  
+  
+
+
 

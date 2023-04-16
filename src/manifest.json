@@ -18,7 +18,8 @@
     "activeTab",
     "scripting",
     "identity",
-    "tabs"
+    "tabs",
+    "webNavigation"
   ],
 
   "host_permissions": [
@@ -37,7 +38,8 @@
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "icons": {
     "16": "./src/icons/get_started16.png",

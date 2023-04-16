@@ -1,23 +1,41 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset=utf-8 />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link href='https://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="./src/css/popup.css">
-</head>
+    <title>Project by Julius Wolf</title>
+    <link rel="stylesheet" type="text/css" href="./src/css/main.css">
 
-<body>
-    <div class="container">
-        <h1>Firebase + Chrome MV3 Login and more....</h1>
-            <form>
-                <div class="social__login">
-                    <a href="#" class="btn btn__google"><i class="fa fa-google"></i>GOOGLE</a>
-                </div>
+  </head>
+  <body>
+    <br>
+
+    <div class="div1">
+  
+    <input type="text" id="channel-name" class="input_field" placeholder="Enter channel name">
+    <button id="search-button" class="btn btn_search">Search</button>
+  </div>
+  
+    <br>
+    
+    <input type="text" id="own-link" class="input_field" placeholder="Enter URL">
+    <button id="URL-button" class="btn btn_search">Submit URL</button>
+    <br>
+  
+    <div id="message"></div>
+
+        <div>
+          <button id='my_saved_links' class="btn btn_saved_links">Saved Links</button>
         </div>
+      </div>
+      <button id= "sign_out" class="btn btn__sign_out"><i class="fa fa-sign-out" title="Account Sign Out"></i>Log Out</button>
     </div>
-</body>
+    
 
+    <script type="module" src="popup.js" defer></script>
+    <script type="module" src="links.js" defer></script>
+
+  </body>
 </html>

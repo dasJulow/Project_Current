@@ -1,3 +1,4 @@
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -10,15 +11,12 @@ module.exports = {
   // Using module bundlers we can add the required code for your extension
   // Any modular script should be added as entry point
   entry: {
-    firebase_config: './src/popup/firebase_config.js',
     popup: './src/popup/popup.js',
-    main_script: './src/popup/main-script.js',
-    options: './src/options/options.js',
     links: './src/popup/links.js',
     saved: './src/popup/saved.js'
   },
   plugins: [
-    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }), 
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup", "popup.html"),
       filename: "popup.html",
@@ -28,16 +26,8 @@ module.exports = {
     // filename: being the html filename
     // chunks: being the script src
     // if the script src is modular then add it as the entry point above
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "options", "options.html"),
-      filename: "options.html",
-      chunks: ["options"] // This is script from entry point
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup", "main.html"),
-      filename: "main.html",
-      chunks: ["main_script"] // This is script from entry point
-    }),
+
+
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup", "select_links.html"),
       filename: "select_links.html",

@@ -1,0 +1,61 @@
+.section_class{
+    padding: 10px;
+    margin: 10px;
+}
+
+.div1{
+    display: flex;
+    flex-wrap:nowrap;
+    background-color: whitesmoke;
+}
+
+.channel_saved{
+    width: 250%;
+}
+
+.a_saved{
+    color: black;
+}
+
+.li_saved {
+    font-size: 15px;
+    border: 1px solid whitesmoke;
+    width: 40%;
+    display: block;
+    background-color:whitesmoke;
+    padding: 10px;
+   
+    
+  }
+
+
+.li_saved:not(.checked):hover{
+    animation-name: selecting;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-duration: 0.4s;
+  }
+
+
+
+
+
+  .title_saved {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+
+  @keyframes selecting {
+    0% {
+      background-color: whitesmoke;
+    }
+    100% {
+      background-color: rgb(141, 194, 255);
+    }
+  }
+  
+  
