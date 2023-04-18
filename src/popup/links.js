@@ -1,19 +1,15 @@
-import { channelName } from "./popup";
-console.log(channelName);
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  const heading = document.getElementById('aff_links');
-  if(heading !=null){heading.innerText += ` for ${channelName}`;}
-  console.log("javascript connected!")
-  
 
-});
+
+const currentChannelName = localStorage.getItem('channelName');
+
+
+
 
 const affiliateLinksUl = document.getElementById('affiliate-links');
 
-// Get the video descriptions from the URL parameter and parse it back into an array
-const urlParams = new URLSearchParams(window.location.search);
-const videoDescriptions = JSON.parse(decodeURIComponent(urlParams.get('videoDescriptions')));
+const videoDescriptions = JSON.parse(localStorage.getItem('description_fetched'));
+
 
 // Declare and initialize the storage variable
 const storage = chrome.storage.sync;
@@ -32,6 +28,7 @@ if (videoDescriptions != null) {
         const link = document.createElement('a');
         link.textContent = match;
         link.href = match;
+        link.classList.add('your-link');
 
         if (match.startsWith('http') || match.startsWith('https')) {
           // Check if the link already exists in the affiliateLinksUl list
@@ -44,18 +41,20 @@ if (videoDescriptions != null) {
             li.classList.add('style');
             link.addEventListener('click', function(event) {
               event.preventDefault();
-              // Assuming 'currentChannelName' is already declared in the file
-              const links = result[channelName] || [];
-              if (!links.includes(event.target.href)) {
-                links.push(event.target.href);
-                storage.set({ [channelName]: links }, function() {
-                  console.log('Link saved to storage');
-                });
-              } else {
-                console.log('Link already exists in storage');
-              }
+              storage.get(currentChannelName, function(result) {
+                const links = result[currentChannelName] || [];
+                if (!links.includes(event.target.href)) {
+                  links.push(event.target.href);
+                  storage.set({ [currentChannelName]: links }, function() {
+                    console.log('Link saved to storage');
+                    localStorage.removeItem('description_fetched');
+
+                  });
+                } else {
+                  console.log('Link already exists in storage');
+                }
+              });
             });
-            
           }
         }
       });
@@ -64,6 +63,12 @@ if (videoDescriptions != null) {
 }
 
 
+
+//btn done
+ btnFinished = document.getElementById('btn_finished');
+btnFinished.addEventListener('click', () => {
+  window.close();
+});
 
 
 

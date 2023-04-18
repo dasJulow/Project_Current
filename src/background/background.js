@@ -1,28 +1,14 @@
 
 
-let isDragging = false; // initialize dragging flag
-
-chrome.windows.onFocusChanged.addListener(function(windowId) {
-	if (windowId === -1) {
-	  return;
-	}
-	chrome.windows.get(windowId, function(window) {
-	  isDragging = window && window.type === 'normal' && window.state === 'fullscreen';
-	});
-  });
   
 
 var currentTab_ = "";
 chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
-	if (isDragging) {
-		return;
-	  }
-	
+
 	chrome.storage.sync.set({'last_url': details.url});
 
 	getCurrentTab().then(function(data) {
 		currentTab_ = data;
-		var shouldRedirect = false;
 	});
 	chrome.storage.sync.get(null, function(result) {
         console.log("Storage sync is working!!!")
@@ -41,7 +27,6 @@ chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
 				console.log(`The match is: ${link}`);
 				chrome.storage.sync.set({'perform_redirect': true});
 				setCurrentTab(redirected_list,new URL(details.url).origin,false);
-				shouldRedirect = true;
 				chrome.tabs.update({url: link});
 				return true;
 			} else {
@@ -53,11 +38,13 @@ chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
 			const randomMatchingLink = matchingLinks[Math.floor(Math.random() * matchingLinks.length)];
 			const allMatchingLinks = links.filter(link => link === randomMatchingLink);
 			const randomLink = allMatchingLinks[Math.floor(Math.random() * allMatchingLinks.length)];
-			//chrome.tabs.update(details.tabId, { url: randomLink });
+			
 		}
 	});
 });
+
 chrome.webNavigation.onCompleted.addListener(function(details) {
+
     console.log("Extension is running!");
 	
     chrome.storage.sync.get(null, function(result) {
@@ -81,6 +68,8 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 		});
     });
 });
+
+
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
   // `tab` will either be a `tabs.Tab` instance or `undefined`.
@@ -110,5 +99,3 @@ const removeById = (arr, id) => {
    const requiredIndex = arr.findIndex(x=>x.tabid == id);
    return !!arr.splice(requiredIndex, 1);
 };
-
-

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "version": "0.1",
-  "name": "Firebase Auth + MV3 Extension",
+  "name": "Honours Project",
   "description": "Webpack Modular Framework!",
   "action": {
     "default_popup": "./popup.html",
@@ -11,7 +11,7 @@
       "48": "./src/icons/get_started48.png",
       "128": "./src/icons/get_started128.png"
     },
-    "default_title": "Getting Started Firebase + MV3!"
+    "default_title": "Honours"
   },
   "permissions": [
     "storage",
@@ -21,12 +21,9 @@
     "tabs",
     "webNavigation"
   ],
-
   "host_permissions": [
     "*://*/*"
   ],
-  
-
   "content_scripts": [
     {
       "matches": [
@@ -47,7 +44,6 @@
     "48": "./src/icons/get_started48.png",
     "128": "./src/icons/get_started128.png"
   },
-  "options_page": "options.html",
   "oauth2": {
     "client_id": "679100910256-52b33aqmmjn8fmsp76qmt273j76vhcf4.apps.googleusercontent.com",
     "scopes": [

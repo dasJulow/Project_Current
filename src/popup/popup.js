@@ -5,7 +5,8 @@ console.log("popup main!")
 
 const API_KEY = 'AIzaSyAzUeU1l9kfi_cmo02t1BRM8waNw8xMQcE';
 
-export let channelName = '';
+
+
 
 // function to search for a YouTube channel by name
 async function searchChannels(channelName) {
@@ -21,13 +22,15 @@ async function searchChannels(channelName) {
       
       return channelId;
     } else {
+      window.alert("No channel found")
       
       return null;
     }
   } catch (error) {
     console.error(error);
-    return null;
+    
   }
+ 
 }
 
 // function to fetch video descriptions for a given channel and number of videos
@@ -55,43 +58,44 @@ async function getVideoDescriptions(channelId, numberOfVideos) {
       return null;
     }
   }
+
+
+  //function to handle setting local storage and callback
+function setLocalStorage(key, value, callback) {
+  localStorage.setItem(key, JSON.stringify(value));
+  if (callback) {
+    callback();
+  }
+}
+
   // function to handle the form submit event
   async function handleSubmit(event) {
     event.preventDefault();
-     channelName = document.querySelector('#channel-name').value;
-    const messageDiv = document.getElementById('message');
-
-
-    //trying to save channelName input value
-    channelName = document.querySelector('#channel-name'.value)
-
+    channelName = document.querySelector('#channel-name').value;
+     messageDiv = document.getElementById('message');
+    localStorage.setItem('channelName', channelName);
+  
   
     const channelId = await searchChannels(channelName); 
   
     if (channelId) { 
-  
       const videoDescriptions = await getVideoDescriptions(channelId, 6); 
   
-      if (videoDescriptions.length > 0) { 
-  
-        // Construct the URL with the videoDescriptions array as a parameter
-        const url = `select_links.html?videoDescriptions=${encodeURIComponent(JSON.stringify(videoDescriptions))}`;
-  
-        // Redirect to select_links.html 
-        const selectLinksWindow = window.open(url, '_blank');
-        
+      if (videoDescriptions.length > 0) {
+        // Save the videoDescriptions in local storage and open the new window in the callback function
+        setLocalStorage('description_fetched', videoDescriptions, () => {
+          // Redirect to select_links.html
+          window.open('select_links.html', '_blank');
+          
+        });
       } else { 
-  
-        messageDiv.innerHTML = 'No video descriptions found.'; 
-  
+        alert("nothing in the description"); 
       } 
-  
     } else { 
-  
-      messageDiv.innerHTML = 'No channel found.'; 
-  
+      alert("no channel found") 
     } 
   }
+  
   
   
 
@@ -103,9 +107,44 @@ async function getVideoDescriptions(channelId, numberOfVideos) {
   document.getElementById("my_saved_links")?.addEventListener("click", openNewPage);
 
   function openNewPage() {
+    const startTime = performance.now(); // Get the current time in milliseconds
     window.open("saved_links.html", "_blank");
+    const endTime = performance.now(); // Get the current time again
+    const timeTaken = endTime - startTime; // Calculate the time taken in milliseconds
+    console.log(`Page opened in ${timeTaken} milliseconds.`); // Log the time taken
   }
   
+
+
+  // own link btn
+  document.getElementById('URL-button').addEventListener('click', ownlink);
+  
+  function ownlink() {
+    const inputField = document.getElementById('own-link');
+    const link = inputField.value;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    
+    if (urlRegex.test(link)) {
+      chrome.storage.sync.set({ MyLinks: [link] }, function() {
+        console.log('Link saved to storage');
+      });
+    } else {
+      alert('Not a valid link');
+    }
+  }
+  
+  
+  
+
+
+
+  
+
+
+
+
+
+
   
 
 
